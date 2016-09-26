@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS books;
 CREATE TABLE books (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  imageurl VARCHAR(255),
-  description VARCHAR(1000),
+  title VARCHAR(512) NOT NULL,
+  image_url VARCHAR(512),
+  description TEXT,
   purchaseLink VARCHAR(255)
 );
 
