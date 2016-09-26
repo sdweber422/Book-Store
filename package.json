@@ -1,0 +1,28 @@
+{
+  "name": "book-store",
+  "version": "1.0.0",
+  "description": "A simple content management system that allows users to add, delete, or update books. Books entered in the system can be viewed in a listing, or searched for using basic searches (title, author, genre).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdweber422/Book-Store.git"
+  },
+  "author": "Nico, Jason, Douglas, Stephan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdweber422/Book-Store/issues"
+  },
+  "homepage": "https://github.com/sdweber422/Book-Store#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "nodemon": "^1.10.2",
+    "pg-promise": "^5.3.3",
+    "pug": "^2.0.0-beta6"
+  }
+}
