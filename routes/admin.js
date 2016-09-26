@@ -27,9 +27,11 @@ router.get('/delete/:id', (request, response) => {
   response.render('delete')
 })
 
+//add
 router.post('/', (request, response) => {
 })
 
+//delete
 router.post('/:id', (request, response) => {
   const bookId = request.params.id
 })
