@@ -61,8 +61,17 @@ const getAuthorsByBookId = bookId => {
           WHERE book_authors.book_id = $1`, [bookId])
 }
 
+const getGenresByBookId = bookId => {
+  return db.any(`SELECT genres.name
+          FROM
+          genres JOIN book_genres
+          ON genres.id = book_genres.genre_id
+          WHERE book_genres.book_id = $1`, [bookId])
+}
+
 module.exports = {
   getAllBooks,
   getBookById,
-  getAuthorsByBookId
+  getAuthorsByBookId,
+  getGenresByBookId
 }

@@ -21,14 +21,17 @@ router.get('/:id', (request, response, next) => {
   let bookId = parseInt(request.params.id)
   Promise.all([
     database.getBookById(bookId),
-    database.getAuthorsByBookId(bookId)
+    database.getAuthorsByBookId(bookId),
+    database.getGenresByBookId(bookId)
   ])
   .then( results => {
     let book = results[0],
-        authors = results[1]
+        authors = results[1],
+        genres = results[2]
     response.render('details', {
       authors,
-      book
+      book,
+      genres
     })
   })
 })

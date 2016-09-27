@@ -2,10 +2,11 @@
 extends index
 block content
   h1= book.title
+  img(src=`${book.image_url}`)
   h2 Authors
   for author in authors
     p= author.name
   h2 Genres
-  p genres
-  //- img(src=`${image_url}`) will add image later
+  for genre in genres
+    p= genre.name
   p= book.description
