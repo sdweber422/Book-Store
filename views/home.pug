@@ -13,15 +13,17 @@ block content
       for book in books
         tr
           td
-            img(src=`${book.image_url}`)
-          td= book.title 
+            a(href=`/${book.id}`)
+              img(src=`${book.image_url}`)
+          td
+            a(href=`/${book.id}`)= book.title
           td= (book.description || 'Description not available.')
           td
             ul
               for author in book.authors
                 li= author.name
           td
-            ul 
+            ul
               for genre in book.genres
                 li= genre.name
 
@@ -30,4 +32,4 @@ block content
       a(href='/?page='+(page-1)) Previous
     br
     if !lastPageFlag
-      a(href='/?page='+(page+1)) Next 
+      a(href='/?page='+(page+1)) Next
