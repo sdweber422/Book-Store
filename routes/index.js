@@ -19,26 +19,18 @@ router.get('/', (request, response, next) => {
 
 router.get('/:id', (request, response, next) => {
   let bookId = parseInt(request.params.id)
-  console.log(bookId)
-  database.getAuthorsByBookId(bookId)
-  .then( authors => {
-    console.log(authors[0].name)
+  Promise.all([
+    database.getBookById(bookId),
+    database.getAuthorsByBookId(bookId)
+  ])
+  .then( results => {
+    let book = results[0],
+        authors = results[1]
     response.render('details', {
-      authors
+      authors,
+      book
     })
   })
-  // database.getAuthorByBookId(bookId)
-  // .then( authorRow => {
-  //   author = authorRow.name
-  //   console.log(author)
-  // })
-  // database.getBookById(bookId)
-  // .then( book => {
-  //   response.render('details', {
-  //     book,
-  //     author
-  //   })
-  // })
 })
 
 module.exports = router;

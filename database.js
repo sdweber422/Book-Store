@@ -59,10 +59,6 @@ const getAuthorsByBookId = bookId => {
           authors JOIN book_authors
           ON authors.id = book_authors.author_id
           WHERE book_authors.book_id = $1`, [bookId])
-
-  // let authorId = db.one("SELECT * FROM book_authors WHERE book_id = $1", [bookId])
-  // console.log("authorId: "+ authorId)
-  // return db.one("SELECT * FROM authors WHERE id = $1", [authorId])
 }
 
 module.exports = {
