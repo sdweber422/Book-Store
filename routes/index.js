@@ -17,4 +17,21 @@ router.get('/', (request, response, next) => {
     })
 })
 
+router.get('/:id', (request, response, next) => {
+  let bookId = parseInt(request.params.id)
+  let author
+  database.getAuthorByBookId(bookId)
+  .then( authorRow => {
+    author = authorRow.name
+    console.log(author)
+  })
+  database.getBookById(bookId)
+  .then( book => {
+    response.render('details', {
+      book,
+      author
+    })
+  })
+})
+
 module.exports = router;
