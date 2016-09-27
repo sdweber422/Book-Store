@@ -7,6 +7,8 @@ block content
         th
         th Title
         th Description
+        th Authors
+        th Genres
     tbody
       for book in books
         tr
@@ -14,6 +16,10 @@ block content
             img(src=`${book.image_url}`)
           td= book.title
           td= book.description
+          for author in book.authors
+            td= author.name
+          for genre in book.genres
+            td= genre.name
 
     br
     if page > 1

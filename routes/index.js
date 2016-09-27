@@ -12,6 +12,8 @@ router.get('/', (request, response, next) => {
         books: books.length === 11 ? books.slice(0,-1) : books,
         lastPageFlag: books[10] ? false : true
       })
+      console.log('books', books)
+      console.log('books.author', books.authors)
     }).catch(function(error){
       throw error
     })
