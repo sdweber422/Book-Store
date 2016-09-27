@@ -3,9 +3,9 @@ const connectionString = `postgres://${process.env.USER}@localhost:5432/${databa
 const pgp = require('pg-promise')();
 const db = pgp(connectionString);
 
-const getAllBooks = (page=1) => {
+const getAllBooks = page => {
   let offset = (page - 1) * 10
-  return db.any('SELECT * FROM books LIMIT 10 OFFSET $1', [offset])
+  return db.any('SELECT * FROM books LIMIT 11 OFFSET $1', [offset])
     // .then()
 }
 

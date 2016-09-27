@@ -4,14 +4,14 @@ block content
   table
     thead
       tr
-        th 
+        th
         th Title
         th Description
     tbody
       for book in books
         tr
           td
-            img(src=`${book.image_url}`) 
+            img(src=`${book.image_url}`)
           td= book.title
           td= book.description
 
@@ -19,5 +19,5 @@ block content
     if page > 1
       a(href='/?page='+(page-1)) Previous
     br
-    if books.length >= 10
+    if !lastPageFlag
       a(href='/?page='+(page+1)) Next 

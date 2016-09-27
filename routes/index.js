@@ -3,17 +3,15 @@ const router = express.Router();
 const database = require('../database')
 
 router.get('/', (request, response, next) => {
-  console.log('pageUNParse', request.query.page)
   let page = (parseInt(request.query.page))
-  console.log('page', page)
   if (isNaN(page)) page = 1;
-  console.log('pageParse', page)
   database.getAllBooks(page)
-    .then( books => { 
+    .then( books => {
       response.render('home', {
-        page,
-        books   
-      }) 
+        page: page,
+        books: books.length === 11 ? books.slice(0,-1) : books,
+        lastPageFlag: books[10] ? false : true
+      })
     }).catch(function(error){
       throw error
     })
