@@ -14,12 +14,16 @@ block content
         tr
           td
             img(src=`${book.image_url}`)
-          td= book.title
-          td= book.description
-          for author in book.authors
-            td= author.name
-          for genre in book.genres
-            td= genre.name
+          td= book.title 
+          td= (book.description || 'Description not available.')
+          td
+            ul
+              for author in book.authors
+                li= author.name
+          td
+            ul 
+              for genre in book.genres
+                li= genre.name
 
     br
     if page > 1
