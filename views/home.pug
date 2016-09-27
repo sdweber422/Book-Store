@@ -1,3 +1,23 @@
 extends index
 block content
   h1 Welcome to the Library
+  table
+    thead
+      tr
+        th 
+        th Title
+        th Description
+    tbody
+      for book in books
+        tr
+          td
+            img(src=`${book.image_url}`) 
+          td= book.title
+          td= book.description
+
+    br
+    if page > 1
+      a(href='/?page='+(page-1)) Previous
+    br
+    if books.length >= 10
+      a(href='/?page='+(page+1)) Next 
