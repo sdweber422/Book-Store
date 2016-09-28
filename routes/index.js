@@ -17,7 +17,7 @@ router.get('/', (request, response, next) => {
     })
 })
 
-router.get(/\d+/, (request, response, next) => {
+router.get(/^\d+/, (request, response, next) => {
   let bookId = parseInt(request.path.slice(1))
   Promise.all([
     database.getBookById(bookId),
