@@ -53,7 +53,6 @@ const getBookById = bookId => {
   return db.one("SELECT * FROM books WHERE id = $1", [bookId])
 }
 
-<<<<<<< f6445f51ed7c7d259567511aa50c141c92850134
 const getAuthorsByBookId = bookId => {
   return db.any(`SELECT authors.name
           FROM
@@ -68,7 +67,10 @@ const getGenresByBookId = bookId => {
           genres JOIN book_genres
           ON genres.id = book_genres.genre_id
           WHERE book_genres.book_id = $1`, [bookId])
-=======
+
+const searchBooks = (options, page) => {
+  let offset = (page - 1) * 10
+
   const sql = `
     SELECT DISTINCT
       books.*
@@ -107,12 +109,12 @@ const getGenresByBookId = bookId => {
 
   return db.manyOrNone(sql, variables)
     .then(getAuthorsAndGenresForBookIds)
->>>>>>> fixed some issues with the pug views
 }
 
 module.exports = {
   getAllBooks,
   getBookById,
   getAuthorsByBookId,
-  getGenresByBookId
+  getGenresByBookId,
+  searchBooks
 }

@@ -14,7 +14,7 @@ block content
         tr
           td
             a(href=`/${book.id}`)
-              img(src=`${book.image_url}`)
+              img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
           td
             a(href=`/${book.id}`)= book.title
           td= (book.description || 'Description not available.')
