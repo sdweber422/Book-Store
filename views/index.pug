@@ -1,7 +1,9 @@
-mixin booklist
+mixin booklist(adminFlag)
   table
     thead
       tr
+        if adminFlag
+          th
         th
         th Title
         th Description
@@ -10,6 +12,13 @@ mixin booklist
     tbody
       for book in books
         tr
+          if adminFlag
+            td
+              ul
+                li
+                  a(href=`/admin/edit/${book.id}`) Edit
+                li
+                  a(href=`/admin/delete/${book.id}`) Delete
           td
             a(href=`/${book.id}`)
               img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
@@ -27,7 +36,7 @@ mixin booklist
               for genreName in genreNames
                 li= genreName
 
-  
+
 doctype html
 html
   head
