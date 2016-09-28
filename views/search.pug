@@ -1,3 +1,36 @@
 extends index
 block content
   h1 search
+  form(method="get" action="/search")
+    label Search For Books: &nbsp
+    input(type="text" placeholder="Search Books..." name="options") 
+    button(type="submit" value="Search")
+  table
+    thead
+      tr
+        th
+        th Title
+        th Description
+        th Authors
+        th Genres
+    tbody
+      for book in books
+        tr
+          td
+            img(src=`${book.image_url}`)
+          td= book.title 
+          td= (book.description || 'Description not available.')
+          td
+            ul
+              for author in book.authors
+                li= author.name
+          td
+            ul 
+              for genre in book.genres
+                li= genre.name
+  br
+  if page > 1
+    a(href='/search?options='+options +'&page='+(page-1)) Previous
+  br
+  if books.length >= 10
+    a(href='/search?options='+options +'&page='+(page+1)) Next 

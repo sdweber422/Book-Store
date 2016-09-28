@@ -49,6 +49,50 @@ const getAuthorsAndGenresForBookIds = books => {
     })
 }
 
+const searchBooks = (options, page) => {
+  let offset = (page - 1) * 10
+
+  const sql = `
+    SELECT DISTINCT
+      books.*
+    FROM
+      books
+    LEFT JOIN
+      book_authors
+    ON
+      book_authors.book_id = books.id
+    LEFT JOIN
+      authors
+    ON
+      book_authors.author_id = authors.id
+    LEFT JOIN 
+      book_genres
+    ON 
+      book_genres.book_id = books.id
+    LEFT JOIN 
+      genres
+    ON 
+      book_genres.genre_id = genres.id
+    WHERE
+      LOWER(title) LIKE $1
+    OR
+      LOWER(description) LIKE $1
+    OR
+      LOWER(genres.name) LIKE $1
+    OR 
+      LOWER(authors.name) LIKE $1
+    LIMIT 
+      10
+    OFFSET
+      $2
+  `
+  const variables = [ '%'+options.replace(/\s+/,'%').toLowerCase()+'%', offset ]
+  
+  return db.manyOrNone(sql, variables)
+    .then(getAuthorsAndGenresForBookIds)
+}
+
 module.exports = {
-  getAllBooks: getAllBooks
+  getAllBooks: getAllBooks,
+  searchBooks: searchBooks
 }
