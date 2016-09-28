@@ -53,6 +53,7 @@ const getBookById = bookId => {
   return db.one("SELECT * FROM books WHERE id = $1", [bookId])
 }
 
+<<<<<<< f6445f51ed7c7d259567511aa50c141c92850134
 const getAuthorsByBookId = bookId => {
   return db.any(`SELECT authors.name
           FROM
@@ -67,6 +68,46 @@ const getGenresByBookId = bookId => {
           genres JOIN book_genres
           ON genres.id = book_genres.genre_id
           WHERE book_genres.book_id = $1`, [bookId])
+=======
+  const sql = `
+    SELECT DISTINCT
+      books.*
+    FROM
+      books
+    LEFT JOIN
+      book_authors
+    ON
+      book_authors.book_id = books.id
+    LEFT JOIN
+      authors
+    ON
+      book_authors.author_id = authors.id
+    LEFT JOIN 
+      book_genres
+    ON 
+      book_genres.book_id = books.id
+    LEFT JOIN 
+      genres
+    ON 
+      book_genres.genre_id = genres.id
+    WHERE
+      LOWER(title) LIKE $1
+    OR
+      LOWER(description) LIKE $1
+    OR
+      LOWER(genres.name) LIKE $1
+    OR 
+      LOWER(authors.name) LIKE $1
+    LIMIT 
+      10
+    OFFSET
+      $2
+  `
+  const variables = [ '%'+options.replace(/\s+/,'%').toLowerCase()+'%', offset ]
+
+  return db.manyOrNone(sql, variables)
+    .then(getAuthorsAndGenresForBookIds)
+>>>>>>> fixed some issues with the pug views
 }
 
 module.exports = {
