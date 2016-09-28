@@ -27,7 +27,12 @@ router.get('/:id', (request, response, next) => {
   .then( results => {
     let book = results[0],
         authors = results[1],
-        genres = results[2]
+        genres = []
+    for(ele of results[2]) {
+      if (!genres.includes(ele.name)) {
+        genres.push(ele.name)
+      }
+    }
     response.render('details', {
       authors,
       book,
