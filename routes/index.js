@@ -17,8 +17,8 @@ router.get('/', (request, response, next) => {
     })
 })
 
-router.get('/:id', (request, response, next) => {
-  let bookId = parseInt(request.params.id)
+router.get(/\d+/, (request, response, next) => {
+  let bookId = parseInt(request.path.slice(1))
   Promise.all([
     database.getBookById(bookId),
     database.getAuthorsByBookId(bookId),
