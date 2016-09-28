@@ -67,6 +67,7 @@ const getGenresByBookId = bookId => {
           genres JOIN book_genres
           ON genres.id = book_genres.genre_id
           WHERE book_genres.book_id = $1`, [bookId])
+}
 
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10
