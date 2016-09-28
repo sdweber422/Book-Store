@@ -75,6 +75,31 @@ const deleteBookById = bookId => {
     DELETE FROM book_genres WHERE book_id = $1`, [bookId])
 }
 
+const addBook = book => {
+  return Promise.all([
+    db.one(`INSERT INTO books (title, image_url, description)
+             VALUES ($1, $2, $3)
+             RETURNING *`,
+             [book.title, book.image_url, book.description]),
+    db.one(`INSERT INTO authors (name)
+            VALUES ($1)
+            RETURNING *`, [book.author]),
+    db.one(`INSERT INTO genres (name)
+            VALUES ($1)
+            RETURNING *`, [book.genre])
+  ]).then( results => {
+    const bookId = results[0].id
+    const authorId = results[1].id
+    const genreId = results[2].id
+    return Promise.all([
+      db.none(`INSERT INTO book_authors (book_id, author_id)
+               VALUES ($1, $2)`, [bookId, authorId]),
+      db.none(`INSERT INTO book_genres (book_id, genre_id)
+               VALUES ($1, $2)`, [bookId, genreId])
+    ]).then( () => bookId )
+  })
+}
+
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10
 
@@ -123,5 +148,6 @@ module.exports = {
   getAuthorsByBookId,
   getGenresByBookId,
   searchBooks,
-  deleteBookById
+  deleteBookById,
+  addBook
 }

@@ -1,3 +1,15 @@
 extends index
 block content
   h1 add
+  form(method="post" action="/admin")
+    label Title:
+    input(type="text" placeholder="book title" name="title")
+    label Author:
+    input(type="text" placeholder="author" name="author")
+    label Genre:
+    input(type="text" placeholder="genre" name="genre")
+    label Description:
+    input(type="text" placeholder="book description" name="description")
+    label Image URL:
+    input(type="text" placeholder="http://williamwoods.ecampus.com/Content/img/book_stack.png" name="image_url")
+    button(type="submit") Add

@@ -45,6 +45,11 @@ router.get('/delete/:id', (request, response) => {
 
 //add
 router.post('/', (request, response) => {
+  database.addBook(request.body)
+  .then( bookId => {
+    console.log(bookId)
+    response.redirect(`/${bookId}`)
+  })
 })
 
 //delete
