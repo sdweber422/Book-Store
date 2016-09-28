@@ -24,8 +24,31 @@ router.get('/edit', (request, response) => {
 
 router.get('/edit/:id', (request, response) => {
   const bookId = request.params.id
-  console.log(bookId)
-  response.render('edit')
+
+  Promise.all([
+    database.getBookById(bookId),
+    database.getAuthorsByBookId(bookId),
+    database.getGenresByBookId(bookId)
+  ])
+  .then( results => {
+    let book = results[0],
+        authors = results[1],
+        genres = []
+    for(ele of results[2]) {
+      if (!genres.includes(ele.name)) {
+        genres.push(ele.name)
+      }
+    }
+    response.render('edit', {
+      book,
+      authors,
+      genres
+    })
+  })
+})
+
+router.post('/edit/:id', (request, response) => {
+  request.body
 })
 
 router.get('/delete', (request, response) => {
@@ -52,9 +75,9 @@ router.post('/', (request, response) => {
   })
 })
 
-//delete
-router.post('/:id', (request, response) => {
-  const bookId = request.params.id
-})
+// //delete
+// router.post('/:id', (request, response) => {
+//   const bookId = request.params.id
+// })
 
 module.exports = router

@@ -1,3 +1,17 @@
 extends index
 block content
   h1 edit
+  form(method="post" action="")
+    label Title:
+    input(type="text" value=`${book.title}` name="title")
+    label Author:
+    for author in authors
+      input(type="text" value=`${author.name}` name="author")
+    label Genre:
+    for genre in genres
+      input(type="text" value=`${genre}` name="genre")
+    label Description:
+    input(type="text" value=`${book.description}` name="description")
+    label Image URL:
+    input(type="text" value=`${book.image_url}` name="image_url")
+    button(type="submit") Update

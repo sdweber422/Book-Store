@@ -100,6 +100,25 @@ const addBook = book => {
   })
 }
 
+const updateBook = book => {
+  return Promise.all([
+    db.one(`UPDATE books
+            SET title = $1,
+            image_url = $2,
+            description = $3
+            WHERE id = $4`,
+      [book.title, book.image_url, book.description, book.id]),
+    db.one(`UPDATE authors
+            SET name = $1
+            WHERE `)
+  ])
+}
+
+
+const getAuthorIdsByBookId = bookId => {
+  return db.
+}
+
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10
 
