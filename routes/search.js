@@ -12,7 +12,7 @@ router.get("/", (request, response, next) => {
     database.searchBooks( options, page )
       .then( books => { response.render("search", {books, page, options }) })
       .catch( error => { response.send({ message: error.message }) })
-  }  
+  }
 });
 
 

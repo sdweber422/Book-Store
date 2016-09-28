@@ -1,10 +1,5 @@
 extends index
 block content
-  h1 search
-  form(method="get" action="/search")
-    label Search For Books: &nbsp
-    input(type="text" placeholder="Search Books..." name="options")
-    button(type="submit" value="Search") Search
   +booklist
   br
   if page > 1

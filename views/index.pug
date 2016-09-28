@@ -4,11 +4,12 @@ mixin booklist(adminFlag)
       tr
         if adminFlag
           th
-        th
-        th Title
-        th Description
-        th Authors
-        th Genres
+        if books.length !== 0
+          th
+          th Title
+          th Description
+          th Authors
+          th Genres
     tbody
       for book in books
         tr
@@ -47,8 +48,9 @@ html
         a(href="/") Home
       li
         a(href="/admin") Admin
-      li Search
-        input(placeholder="book or author")
-        button &#9906;
-
+      li
+        form(method="get" action=adminFlag ? "/admin" : "/search")
+          label Search For Books:
+          input(type="text" placeholder="Search Books..." name="options")
+          button(type="submit" value="Search") Search
     block content

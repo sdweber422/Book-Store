@@ -33,7 +33,7 @@ const getGenresForBookIds = bookIds => {
 
 const getAuthorsAndGenresForBookIds = books => {
   const bookIds = books.map( book => book.id)
-  if (bookIds === 0) return Promise.resolve(books)
+  if (bookIds.length === 0) return Promise.resolve(books)
   return Promise.all([
     getAuthorsForBookIds(bookIds),
     getGenresForBookIds(bookIds)
@@ -85,13 +85,13 @@ const searchBooks = (options, page) => {
       authors
     ON
       book_authors.author_id = authors.id
-    LEFT JOIN 
+    LEFT JOIN
       book_genres
-    ON 
+    ON
       book_genres.book_id = books.id
-    LEFT JOIN 
+    LEFT JOIN
       genres
-    ON 
+    ON
       book_genres.genre_id = genres.id
     WHERE
       LOWER(title) LIKE $1
@@ -99,15 +99,14 @@ const searchBooks = (options, page) => {
       LOWER(description) LIKE $1
     OR
       LOWER(genres.name) LIKE $1
-    OR 
+    OR
       LOWER(authors.name) LIKE $1
-    LIMIT 
+    LIMIT
       10
     OFFSET
       $2
   `
   const variables = [ '%'+options.replace(/\s+/,'%').toLowerCase()+'%', offset ]
-
   return db.manyOrNone(sql, variables)
     .then(getAuthorsAndGenresForBookIds)
 }
