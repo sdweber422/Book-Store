@@ -69,6 +69,12 @@ const getGenresByBookId = bookId => {
           WHERE book_genres.book_id = $1`, [bookId])
 }
 
+const deleteBookById = bookId => {
+  return db.none(`DELETE FROM books WHERE id = $1;
+    DELETE FROM book_authors WHERE book_id = $1;
+    DELETE FROM book_genres WHERE book_id = $1`, [bookId])
+}
+
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10
 
@@ -116,5 +122,6 @@ module.exports = {
   getBookById,
   getAuthorsByBookId,
   getGenresByBookId,
-  searchBooks
+  searchBooks,
+  deleteBookById
 }
