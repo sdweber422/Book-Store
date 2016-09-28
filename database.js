@@ -49,6 +49,29 @@ const getAuthorsAndGenresForBookIds = books => {
     })
 }
 
+const getBookById = bookId => {
+  return db.one("SELECT * FROM books WHERE id = $1", [bookId])
+}
+
+const getAuthorsByBookId = bookId => {
+  return db.any(`SELECT authors.name
+          FROM
+          authors JOIN book_authors
+          ON authors.id = book_authors.author_id
+          WHERE book_authors.book_id = $1`, [bookId])
+}
+
+const getGenresByBookId = bookId => {
+  return db.any(`SELECT genres.name
+          FROM
+          genres JOIN book_genres
+          ON genres.id = book_genres.genre_id
+          WHERE book_genres.book_id = $1`, [bookId])
+}
+
 module.exports = {
-  getAllBooks: getAllBooks
+  getAllBooks,
+  getBookById,
+  getAuthorsByBookId,
+  getGenresByBookId
 }

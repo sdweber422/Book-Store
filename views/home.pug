@@ -13,21 +13,25 @@ block content
       for book in books
         tr
           td
-            img(src=`${book.image_url}`)
-          td= book.title 
+            a(href=`/${book.id}`)
+              img(src=`${book.image_url}`)
+          td
+            a(href=`/${book.id}`)= book.title
           td= (book.description || 'Description not available.')
           td
             ul
               for author in book.authors
                 li= author.name
           td
-            ul 
-              for genre in book.genres
-                li= genre.name
+            ul
+              -genreNames = book.genres.map( genre => genre.name )
+              -genreNames = genreNames.filter( (element,index,array) => !array.slice(0,index).includes(element) )
+              for genreName in genreNames
+                li= genreName
 
     br
     if page > 1
       a(href='/?page='+(page-1)) Previous
     br
     if !lastPageFlag
-      a(href='/?page='+(page+1)) Next 
+      a(href='/?page='+(page+1)) Next
