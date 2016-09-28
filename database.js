@@ -87,7 +87,7 @@ const searchBooks = (options, page) => {
       $2
   `
   const variables = [ '%'+options.replace(/\s+/,'%').toLowerCase()+'%', offset ]
-  
+
   return db.manyOrNone(sql, variables)
     .then(getAuthorsAndGenresForBookIds)
 }

@@ -3,8 +3,8 @@ block content
   h1 search
   form(method="get" action="/search")
     label Search For Books: &nbsp
-    input(type="text" placeholder="Search Books..." name="options") 
-    button(type="submit" value="Search")
+    input(type="text" placeholder="Search Books..." name="options")
+    button(type="submit" value="Search") Search
   table
     thead
       tr
@@ -17,7 +17,7 @@ block content
       for book in books
         tr
           td
-            img(src=`${book.image_url}`)
+            img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
           td= book.title 
           td= (book.description || 'Description not available.')
           td
