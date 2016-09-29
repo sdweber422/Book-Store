@@ -1,15 +1,30 @@
 extends index
 block content
   h1 add
+
   form(method="post" action="/admin")
-    label Title:
-    input(type="text" placeholder="book title" name="title")
-    label Author:
-    input(type="text" placeholder="author" name="author")
-    label Genre:
-    input(type="text" placeholder="genre" name="genre")
-    label Description:
-    input(type="text" placeholder="book description" name="description")
-    label Image URL:
-    input(type="text" placeholder="http://williamwoods.ecampus.com/Content/img/book_stack.png" name="image_url")
-    button(type="submit") Add
+
+    .row
+      label Title:
+      input(type="text" placeholder="book title" name="title")
+
+    .row.author
+      label Author:
+      input(type="text" placeholder="author" name="authors")
+      button.addAuthorButton 
+
+    .row.genre
+      label Genre:
+      input(type="text" placeholder="genre" name="genres")
+      button.addGenreButton 
+
+    .row
+      label Description:
+      input(type="text" placeholder="book description" name="description")
+
+    .row
+      label Image URL:
+      input(type="text" placeholder="http://williamwoods.ecampus.com/Content/img/book_stack.png" name="image_url")
+
+    .row
+      button(type="submit") Add

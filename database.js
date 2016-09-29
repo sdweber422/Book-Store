@@ -87,30 +87,33 @@ const deleteGenreAssociationByBookId = (bookId, genreId) => {
   return db.none(deleteGenreAssociationByBookIdSql, [bookId, genreId])
 }
 
+const addBookSql = 'INSERT INTO books (title, image_url, description) VALUES ($1, $2, $3) RETURNING *'
+
 const addBook = book => {
-  return Promise.all([
-    db.one(`INSERT INTO books (title, image_url, description)
-             VALUES ($1, $2, $3)
-             RETURNING *`,
-             [book.title, book.image_url, book.description]),
-    db.one(`INSERT INTO authors (name)
-            VALUES ($1)
-            RETURNING *`, [book.author]),
-    db.one(`INSERT INTO genres (name)
-            VALUES ($1)
-            RETURNING *`, [book.genre])
-  ]).then( results => {
-    const bookId = results[0].id
-    const authorId = results[1].id
-    const genreId = results[2].id
+  return db.one(addBookSql, [book.title, book.image_url, book.description])
+  .then( results => {
+    const bookId = results.id
     return Promise.all([
-      db.none(`INSERT INTO book_authors (book_id, author_id)
-               VALUES ($1, $2)`, [bookId, authorId]),
-      db.none(`INSERT INTO book_genres (book_id, genre_id)
-               VALUES ($1, $2)`, [bookId, genreId])
+      addAuthors(bookId, book.authors),
+      addGenres(bookId, book.genres)
     ]).then( () => bookId )
   })
 }
+
+// const addBook = book => {
+//   return Promise.all([
+//     db.one(`INSERT INTO books (title, image_url, description)
+//              VALUES ($1, $2, $3)
+//              RETURNING *`,
+//              [book.title, book.image_url, book.description])
+//   ]).then( results => {
+//     const bookId = results[0].id
+//     return Promise.all([
+//       addAuthors(bookId, book.authors),
+//       addGenres(bookId, book.genres)
+//     ]).then( () => bookId )
+//   })
+// }
 
 const updateSql = 'UPDATE books SET title = $1, image_url = $2, description = $3 WHERE id = $4'
 
@@ -124,11 +127,52 @@ const updateBook = (formInput, bookId) => {
 
   return Promise.all([
     updateBookQuery,
-    updateAuthors(bookId, formInput.authors)
-    //updateGenres(bookId, formInput.genres)
+    addAuthors(bookId, formInput.authors),
+    addGenres(bookId, formInput.genres)
   ])
   .then( result => result )
 }
+
+const addAuthors = (bookId, authors) => {
+  if (!authors)
+    return Promise.resolve()
+  const addAuthorSql = "INSERT INTO authors (name) VALUES ($1) RETURNING id"
+  const associateBookAuthorSql =
+        'INSERT INTO book_authors (author_id, book_id) VALUES ($1, $2)'
+  const promises = []
+  for (author of authors) {
+    if( author.length !== 0){
+      promises.push( db.any(addAuthorSql, [author]) )
+    }
+  }
+  return Promise.all( promises )
+  .then( authorIds => {
+    authorIds.forEach( authorId => {
+      db.any(associateBookAuthorSql, [authorId[0].id, bookId])
+    } )
+  } )
+}
+
+const addGenres = (bookId, genres) => {
+  if (!genres)
+    return Promise.resolve()
+  const addGenreSql = "INSERT INTO genres (name) VALUES ($1) RETURNING id"
+  const associateBookGenreSql =
+        'INSERT INTO book_genres (genre_id, book_id) VALUES ($1, $2)'
+  const promises = []
+  for (genre of genres) {
+    if( genre.length !== 0){
+      promises.push( db.any(addGenreSql, [genre]) )
+    }
+  }
+  return Promise.all( promises )
+  .then( genreIds => {
+    genreIds.forEach( genreId => {
+      db.any(associateBookGenreSql, [genreId[0].id, bookId])
+    } )
+  } )
+}
+
 
 const updateAuthorsSql = 'UPDATE authors SET name = $1 WHERE id = $2'
 

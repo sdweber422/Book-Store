@@ -6,31 +6,31 @@ block content
 
     .row
       label Title:
-        input(type="text" value=`${book.title}` name="title")
+      input(type="text" value=`${book.title}` name="title")
 
-    .row
+    .row.author
       label Authors:
       for author in authors
         .edit-author(data-author-id=author.id)
           span= author.name
           a.delete-author(href="#", data-author-id=author.id, data-book-id=book.id) X
-            //- input(type="text" value=`${author.name}` name="authors")
+      button.addAuthorButton 
 
-    .row
+    .row.genre
       label Genres:
       for genre in genres
-        //- input(type="text" value=`${genre}` name="genres")
         .edit-genre(data-genre-id=genre.id)
           span= genre.name
           a.delete-genre(href="#", data-genre-id=genre.id, data-book-id=book.id) X
+      button.addGenreButton 
 
     .row
       label Description:
-        textarea(type="text" name="description")= book.description
+      textarea(type="text" name="description")= book.description
 
     .row
       label Image URL:
-        input(type="text" value=`${book.image_url}` name="image_url")
+      input(type="text" value=`${book.image_url}` name="image_url")
 
     .row
       button(type="submit") Update

@@ -1,4 +1,14 @@
 $(document).ready( function() {
+  $('.addAuthorButton').click( function (event) {
+    event.preventDefault()
+    $(".author").append("<div class='authorInput'><input placeholder='New Author' type='text' name='authors'></input></div>")
+  } )
+
+  $('.addGenreButton').click( function (event) {
+    event.preventDefault()
+    $(".genre").append("<div class='genreInput'><input placeholder= 'New Genre' type= 'text' name='genres'></input></div>")
+  } )
+
   $( '.delete-author' ).click( function( event ) {
     event.preventDefault()
 
@@ -14,6 +24,7 @@ $(document).ready( function() {
       }
     })
   })
+
   $( '.delete-genre' ).click( function( event ) {
     event.preventDefault()
 
