@@ -20,7 +20,6 @@ $(document).ready( function() {
       data: data,
       success: function( result ) {
         $('.edit-author[data-author-id=' + data.authorId + ']' ).remove()
-        console.log( 'Author deleted!', result )
       }
     })
   })
@@ -36,7 +35,6 @@ $(document).ready( function() {
       data: data,
       success: function( result ) {
         $('.edit-genre[data-genre-id=' + data.genreId + ']' ).remove()
-        console.log( 'Genre deleted!', result )
       }
     })
   })

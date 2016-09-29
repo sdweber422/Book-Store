@@ -100,21 +100,6 @@ const addBook = book => {
   })
 }
 
-// const addBook = book => {
-//   return Promise.all([
-//     db.one(`INSERT INTO books (title, image_url, description)
-//              VALUES ($1, $2, $3)
-//              RETURNING *`,
-//              [book.title, book.image_url, book.description])
-//   ]).then( results => {
-//     const bookId = results[0].id
-//     return Promise.all([
-//       addAuthors(bookId, book.authors),
-//       addGenres(bookId, book.genres)
-//     ]).then( () => bookId )
-//   })
-// }
-
 const updateSql = 'UPDATE books SET title = $1, image_url = $2, description = $3 WHERE id = $4'
 
 const updateBook = (formInput, bookId) => {
@@ -122,8 +107,6 @@ const updateBook = (formInput, bookId) => {
 
   const updateBookQuery =
     db.none( updateSql, [title, image_url, description, bookId])
-
-  console.log('updateBookQuery ')
 
   return Promise.all([
     updateBookQuery,
@@ -172,56 +155,6 @@ const addGenres = (bookId, genres) => {
     } )
   } )
 }
-
-
-const updateAuthorsSql = 'UPDATE authors SET name = $1 WHERE id = $2'
-
-const updateAuthors = (bookId, authors) => {
-  // Get the author IDs associated with bookId
-  //
-
-  return getAuthorIdsByBookId( bookId )
-    .then( authorIds => db.any( updateAuthorsSql, [authors, authorIds[0].id ]) )
-    .catch( error => console.log( 'WTF', error ))
-
-
-}
-
-const updateGenres = (bookId, genres)=> {
-  const genreIds = db.any(getGenreIdsByBookId(bookId))
-
-  const sql = `
-    UPDATE genres
-    SET name = $1
-    WHERE id = $2
-  `
-  return db.none( sql, [genres, genreIds])
-}
-
-const getAuthorIdsByBookId = bookId => {
-  const sql = `
-    SELECT authors.id
-    FROM authors
-    JOIN book_authors
-    ON book_authors.author_id = authors.id
-    WHERE book_authors.book_id = $1
-  `
-
-  console.log('getAuthorIdsByBookId', bookId )
-  return db.any(sql, [bookId])
-}
-
-const getGenreIdsByBookId = bookId => {
-  const sql = `
-    SELECT genres.id
-    FROM genres
-    JOIN book_genres
-    ON book_genres.genre_id = genres.id
-    WHERE book_genres.book_id = $1
-  `
-  return db.any(sql, [bookId])
-}
-
 
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10

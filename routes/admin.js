@@ -43,18 +43,13 @@ router.get('/edit/:id', (request, response) => {
 })
 
 router.post('/edit/:id', (request, response) => {
-  console.log(JSON.stringify(request.body))
-  console.log(JSON.stringify(request.params))
   const bookId = parseInt(request.params.id)
 
   database.updateBook(request.body, bookId)
     .then( book => {
-      console.log('book', book)
-      // response.send(JSON.stringify(book))
       response.redirect(`/${bookId}`)
     })
     .catch( error => { response.send({ message: error.message }) })
-  // response.send(JSON.stringify(request.params))
 })
 
 router.get('/delete', (request, response) => {
@@ -72,18 +67,16 @@ router.get('/delete/:id', (request, response) => {
   })
 })
 
-//add
+//add book
 router.post('/', (request, response) => {
   database.addBook(request.body)
   .then( bookId => {
-    console.log(bookId)
     response.redirect(`/${bookId}`)
   })
 })
 
 router.delete( '/author', (request, response) => {
   const { bookId, authorId } = request.body
-  console.log( "Delete ", bookId, authorId )
   database.deleteAuthorAssociationByBookId(bookId, authorId)
 
   response.send({ success: true })
@@ -91,16 +84,9 @@ router.delete( '/author', (request, response) => {
 
 router.delete( '/genre', (request, response) => {
   const { bookId, genreId } = request.body
-  console.log( "Delete ", bookId, genreId )
   database.deleteGenreAssociationByBookId(bookId, genreId)
 
   response.send({ success: true })
 })
-
-
-// //delete
-// router.post('/:id', (request, response) => {
-//   const bookId = request.params.id
-// })
 
 module.exports = router
