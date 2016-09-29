@@ -54,7 +54,7 @@ const getBookById = bookId => {
 }
 
 const getAuthorsByBookId = bookId => {
-  return db.any(`SELECT authors.name
+  return db.any(`SELECT *
           FROM
           authors JOIN book_authors
           ON authors.id = book_authors.author_id
@@ -100,67 +100,64 @@ const addBook = book => {
   })
 }
 
-const updateBook = (options, bookId) => {
-  // return Promise.all([
-  //   db.one(`UPDATE books
-  //           SET title = $1,
-  //           image_url = $2,
-  //           description = $3
-  //           WHERE id = $4`,
-  //     [book.title, book.image_url, book.description, book.id])
-  // ])
-  const updateBookQuery = 
-    db.none(`UPDATE books
-            SET title = $1,
-            image_url = $2,
-            description = $3
-            WHERE id = $4
-          `,
-      [options.title, options.image_url, options.description, bookId])
-    return Promise.all([
-      updateBookQuery,
-      updateAuthors(bookId, options.author),
-      updateGenres(bookId, options.genre)
-    ])
-    .then( () => book)
+const updateSql = 'UPDATE books SET title = $1, image_url = $2, description = $3 WHERE id = $4'
+
+const updateBook = (formInput, bookId) => {
+  const { title, image_url, description } = formInput
+
+  const updateBookQuery =
+    db.none( updateSql, [title, image_url, description, bookId])
+
+  console.log('updateBookQuery ')
+
+  return Promise.all([
+    updateBookQuery,
+    updateAuthors(bookId, formInput.authors)
+    //updateGenres(bookId, formInput.genres)
+  ])
+  .then( result => result )
 }
 
-const updateAuthors = (bookId, options)=> {
-  const authorIds = db.any(getAuthorIdsByBookId(bookId))
+const updateAuthorsSql = 'UPDATE authors SET name = $1 WHERE id = $2'
 
-  const sql = `
-    UPDATE authors
-    SET name = $1
-    WHERE id = ($2:csv)
-  `
-  return db.none( sql, [bookId, authorIds])
+const updateAuthors = (bookId, authors) => {
+  // Get the author IDs associated with bookId
+  //
+
+  return getAuthorIdsByBookId( bookId )
+    .then( authorIds => db.any( updateAuthorsSql, [authors, authorIds[0].id ]) )
+    .catch( error => console.log( 'WTF', error ))
+
+
 }
 
-const updateGenres = (bookId, options)=> {
+const updateGenres = (bookId, genres)=> {
   const genreIds = db.any(getGenreIdsByBookId(bookId))
 
   const sql = `
     UPDATE genres
     SET name = $1
-    WHERE id = ($2:csv)
+    WHERE id = $2
   `
-  return db.none( sql, [bookId, genreIds])
+  return db.none( sql, [genres, genreIds])
 }
 
 const getAuthorIdsByBookId = bookId => {
   const sql = `
-    SELECT authors.*, book_authors.*
+    SELECT authors.id
     FROM authors
     JOIN book_authors
     ON book_authors.author_id = authors.id
     WHERE book_authors.book_id = $1
   `
+
+  console.log('getAuthorIdsByBookId', bookId )
   return db.any(sql, [bookId])
 }
 
 const getGenreIdsByBookId = bookId => {
   const sql = `
-    SELECT genres.*, book_genres.*
+    SELECT genres.id
     FROM genres
     JOIN book_genres
     ON book_genres.genre_id = genres.id

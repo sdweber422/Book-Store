@@ -51,6 +51,7 @@ router.post('/edit/:id', (request, response) => {
   console.log(JSON.stringify(request.body))
   console.log(JSON.stringify(request.params))
   const bookId = parseInt(request.params.id)
+
   database.updateBook(request.body, bookId)
     .then( book => {
       console.log('book', book)
@@ -83,6 +84,14 @@ router.post('/', (request, response) => {
     console.log(bookId)
     response.redirect(`/${bookId}`)
   })
+})
+
+router.delete( '/author', (request, response) => {
+  const { bookId, authorId } = request.body
+
+  console.log( "Delete ", bookId, authorId )
+
+  response.send({ success: true })
 })
 
 // //delete
