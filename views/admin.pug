@@ -4,3 +4,10 @@ block content
   a(href="/admin/add") Add
 
   +booklist(true)
+
+  br
+  if page > 1
+    a(href='/admin?options='+options +'&page='+(page-1)) Previous
+  br
+  if !lastPageFlag && books.length >= 10
+    a(href='/admin?options='+options +'&page='+(page+1)) Next

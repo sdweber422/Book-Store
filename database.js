@@ -26,7 +26,7 @@ const getGenresForBookIds = bookIds => {
     FROM genres
     JOIN book_genres
     ON book_genres.genre_id = genres.id
-    WHERE book_genres.genre_id IN ($1:csv)
+    WHERE book_genres.book_id IN ($1:csv)
   `
   return db.any(sql, [bookIds])
 }
@@ -189,7 +189,7 @@ const searchBooks = (options, page) => {
     OR
       LOWER(authors.name) LIKE $1
     LIMIT
-      10
+      11
     OFFSET
       $2
   `

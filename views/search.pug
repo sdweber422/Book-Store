@@ -5,5 +5,5 @@ block content
   if page > 1
     a(href='/search?options='+options +'&page='+(page-1)) Previous
   br
-  if books.length >= 10
+  if !lastPageFlag
     a(href='/search?options='+options +'&page='+(page+1)) Next
