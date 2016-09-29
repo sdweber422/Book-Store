@@ -62,7 +62,7 @@ const getAuthorsByBookId = bookId => {
 }
 
 const getGenresByBookId = bookId => {
-  return db.any(`SELECT genres.name
+  return db.any(`SELECT *
           FROM
           genres JOIN book_genres
           ON genres.id = book_genres.genre_id
@@ -73,6 +73,18 @@ const deleteBookById = bookId => {
   return db.none(`DELETE FROM books WHERE id = $1;
     DELETE FROM book_authors WHERE book_id = $1;
     DELETE FROM book_genres WHERE book_id = $1`, [bookId])
+}
+
+const deleteAuthorAssociationByBookIdSql = 'DELETE FROM book_authors WHERE book_authors.book_id = $1 AND book_authors.author_id = $2'
+
+const deleteAuthorAssociationByBookId = (bookId, authorId) => {
+  return db.none(deleteAuthorAssociationByBookIdSql, [bookId, authorId])
+}
+
+const deleteGenreAssociationByBookIdSql = 'DELETE FROM book_genres WHERE book_genres.book_id = $1 AND book_genres.genre_id = $2'
+
+const deleteGenreAssociationByBookId = (bookId, genreId) => {
+  return db.none(deleteGenreAssociationByBookIdSql, [bookId, genreId])
 }
 
 const addBook = book => {
@@ -217,5 +229,7 @@ module.exports = {
   searchBooks,
   deleteBookById,
   addBook,
-  updateBook
+  updateBook,
+  deleteAuthorAssociationByBookId,
+  deleteGenreAssociationByBookId
 }

@@ -14,4 +14,19 @@ $(document).ready( function() {
       }
     })
   })
+  $( '.delete-genre' ).click( function( event ) {
+    event.preventDefault()
+
+    var data = $(this).data()
+
+    $.ajax({
+      url: '/admin/genre',
+      method: 'delete',
+      data: data,
+      success: function( result ) {
+        $('.edit-genre[data-genre-id=' + data.genreId + ']' ).remove()
+        console.log( 'Genre deleted!', result )
+      }
+    })
+  })
 })

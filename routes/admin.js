@@ -31,14 +31,9 @@ router.get('/edit/:id', (request, response) => {
     database.getGenresByBookId(bookId)
   ])
   .then( results => {
-    let book = results[0],
+    const book = results[0],
         authors = results[1],
-        genres = []
-    for(ele of results[2]) {
-      if (!genres.includes(ele.name)) {
-        genres.push(ele.name)
-      }
-    }
+        genres = results[2]
     response.render('edit', {
       book,
       authors,
@@ -88,11 +83,20 @@ router.post('/', (request, response) => {
 
 router.delete( '/author', (request, response) => {
   const { bookId, authorId } = request.body
-
   console.log( "Delete ", bookId, authorId )
+  database.deleteAuthorAssociationByBookId(bookId, authorId)
 
   response.send({ success: true })
 })
+
+router.delete( '/genre', (request, response) => {
+  const { bookId, genreId } = request.body
+  console.log( "Delete ", bookId, genreId )
+  database.deleteGenreAssociationByBookId(bookId, genreId)
+
+  response.send({ success: true })
+})
+
 
 // //delete
 // router.post('/:id', (request, response) => {
