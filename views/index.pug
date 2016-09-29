@@ -1,3 +1,43 @@
+mixin booklist(adminFlag)
+  table
+    thead
+      tr
+        if adminFlag
+          th
+        if books.length !== 0
+          th
+          th Title
+          th Description
+          th Authors
+          th Genres
+    tbody
+      for book in books
+        tr
+          if adminFlag
+            td
+              ul
+                li
+                  a(href=`/admin/edit/${book.id}`) Edit
+                li
+                  a(href=`/admin/delete/${book.id}`) Delete
+          td
+            a(href=`/${book.id}`)
+              img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
+          td
+            a(href=`/${book.id}`)= book.title
+          td= (book.description || 'Description not available.')
+          td
+            ul
+              for author in book.authors
+                li= author.name
+          td
+            ul
+              -genreNames = book.genres.map( genre => genre.name )
+              -genreNames = genreNames.filter( (element,index,array) => !array.slice(0,index).includes(element) )
+              for genreName in genreNames
+                li= genreName
+
+
 doctype html
 html
   head
@@ -8,8 +48,12 @@ html
         a(href="/") Home
       li
         a(href="/admin") Admin
-      li Search
-        input(placeholder="book or author")
-        button &#9906;
-
+      li
+        form(method="get" action=adminFlag ? "/admin" : "/search")
+          label Search For Books:
+          input(type="text" placeholder="Search Books..." name="options")
+          button(type="submit" value="Search") Search
     block content
+
+    script(src="https://code.jquery.com/jquery-3.1.1.js", integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=", crossorigin="anonymous")
+    script(src="/javascripts/main.js")

@@ -1,4 +1,4 @@
 extends index
 block content
-  h1 delete
-  h2= bookId
+  h1 #{book.title} deleted
+  img(src=`${book.image_url}`)

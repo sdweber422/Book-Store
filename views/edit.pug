@@ -1,3 +1,36 @@
 extends index
 block content
   h1 edit
+
+  form(method="post" action=`/admin/edit/${book.id}`)
+
+    .row
+      label Title:
+      input(type="text" value=`${book.title}` name="title")
+
+    .row.author
+      label Authors:
+      for author in authors
+        .edit-author(data-author-id=author.id)
+          span= author.name
+          a.delete-author(href="#", data-author-id=author.id, data-book-id=book.id) X
+      button.addAuthorButton 
+
+    .row.genre
+      label Genres:
+      for genre in genres
+        .edit-genre(data-genre-id=genre.id)
+          span= genre.name
+          a.delete-genre(href="#", data-genre-id=genre.id, data-book-id=book.id) X
+      button.addGenreButton 
+
+    .row
+      label Description:
+      textarea(type="text" name="description")= book.description
+
+    .row
+      label Image URL:
+      input(type="text" value=`${book.image_url}` name="image_url")
+
+    .row
+      button(type="submit") Update

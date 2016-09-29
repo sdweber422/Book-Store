@@ -1,7 +1,17 @@
 const router = require('express').Router()
+const database = require('../database')
 
 router.get('/', (request, response) => {
-  response.render('admin')
+  const { options } = request.query
+  let page = parseInt( request.query.page || 1 )
+
+  if( options === undefined ) {
+    response.render( 'admin', { books: [], page, options, adminFlag: true })
+  } else {
+    database.searchBooks( options, page )
+      .then( books => { response.render("admin", {books, page, options, adminFlag: true }) })
+      .catch( error => { response.send({ message: error.message }) })
+    }
 })
 
 router.get('/add', (request, response) => {
@@ -14,8 +24,32 @@ router.get('/edit', (request, response) => {
 
 router.get('/edit/:id', (request, response) => {
   const bookId = request.params.id
-  console.log(bookId)
-  response.render('edit')
+
+  Promise.all([
+    database.getBookById(bookId),
+    database.getAuthorsByBookId(bookId),
+    database.getGenresByBookId(bookId)
+  ])
+  .then( results => {
+    const book = results[0],
+        authors = results[1],
+        genres = results[2]
+    response.render('edit', {
+      book,
+      authors,
+      genres
+    })
+  })
+})
+
+router.post('/edit/:id', (request, response) => {
+  const bookId = parseInt(request.params.id)
+
+  database.updateBook(request.body, bookId)
+    .then( book => {
+      response.redirect(`/${bookId}`)
+    })
+    .catch( error => { response.send({ message: error.message }) })
 })
 
 router.get('/delete', (request, response) => {
@@ -24,16 +58,35 @@ router.get('/delete', (request, response) => {
 
 router.get('/delete/:id', (request, response) => {
   const bookId = request.params.id
-  response.render('delete', {bookId})
+  database.getBookById(bookId)
+  .then( book => {
+    database.deleteBookById(bookId)
+    .then( () => {
+      response.render('delete', {book})
+    })
+  })
 })
 
-//add
+//add book
 router.post('/', (request, response) => {
+  database.addBook(request.body)
+  .then( bookId => {
+    response.redirect(`/${bookId}`)
+  })
 })
 
-//delete
-router.post('/:id', (request, response) => {
-  const bookId = request.params.id
+router.delete( '/author', (request, response) => {
+  const { bookId, authorId } = request.body
+  database.deleteAuthorAssociationByBookId(bookId, authorId)
+
+  response.send({ success: true })
+})
+
+router.delete( '/genre', (request, response) => {
+  const { bookId, genreId } = request.body
+  database.deleteGenreAssociationByBookId(bookId, genreId)
+
+  response.send({ success: true })
 })
 
 module.exports = router
