@@ -48,7 +48,17 @@ router.get('/edit/:id', (request, response) => {
 })
 
 router.post('/edit/:id', (request, response) => {
-  request.body
+  console.log(JSON.stringify(request.body))
+  console.log(JSON.stringify(request.params))
+  const bookId = parseInt(request.params.id)
+  database.updateBook(request.body, bookId)
+    .then( book => {
+      console.log('book', book)
+      // response.send(JSON.stringify(book))
+      response.redirect(`/${bookId}`)
+    })
+    .catch( error => { response.send({ message: error.message }) })
+  // response.send(JSON.stringify(request.params))
 })
 
 router.get('/delete', (request, response) => {

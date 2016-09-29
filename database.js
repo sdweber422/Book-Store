@@ -100,24 +100,75 @@ const addBook = book => {
   })
 }
 
-const updateBook = book => {
-  return Promise.all([
-    db.one(`UPDATE books
+const updateBook = (options, bookId) => {
+  // return Promise.all([
+  //   db.one(`UPDATE books
+  //           SET title = $1,
+  //           image_url = $2,
+  //           description = $3
+  //           WHERE id = $4`,
+  //     [book.title, book.image_url, book.description, book.id])
+  // ])
+  const updateBookQuery = 
+    db.none(`UPDATE books
             SET title = $1,
             image_url = $2,
             description = $3
-            WHERE id = $4`,
-      [book.title, book.image_url, book.description, book.id]),
-    db.one(`UPDATE authors
-            SET name = $1
-            WHERE `)
-  ])
+            WHERE id = $4
+          `,
+      [options.title, options.image_url, options.description, bookId])
+    return Promise.all([
+      updateBookQuery,
+      updateAuthors(bookId, options.author),
+      updateGenres(bookId, options.genre)
+    ])
+    .then( () => book)
 }
 
+const updateAuthors = (bookId, options)=> {
+  const authorIds = db.any(getAuthorIdsByBookId(bookId))
+
+  const sql = `
+    UPDATE authors
+    SET name = $1
+    WHERE id = ($2:csv)
+  `
+  return db.none( sql, [bookId, authorIds])
+}
+
+const updateGenres = (bookId, options)=> {
+  const genreIds = db.any(getGenreIdsByBookId(bookId))
+
+  const sql = `
+    UPDATE genres
+    SET name = $1
+    WHERE id = ($2:csv)
+  `
+  return db.none( sql, [bookId, genreIds])
+}
 
 const getAuthorIdsByBookId = bookId => {
-  return db.
+  const sql = `
+    SELECT authors.*, book_authors.*
+    FROM authors
+    JOIN book_authors
+    ON book_authors.author_id = authors.id
+    WHERE book_authors.book_id = $1
+  `
+  return db.any(sql, [bookId])
 }
+
+const getGenreIdsByBookId = bookId => {
+  const sql = `
+    SELECT genres.*, book_genres.*
+    FROM genres
+    JOIN book_genres
+    ON book_genres.genre_id = genres.id
+    WHERE book_genres.book_id = $1
+  `
+  return db.any(sql, [bookId])
+}
+
 
 const searchBooks = (options, page) => {
   let offset = (page - 1) * 10
@@ -168,5 +219,6 @@ module.exports = {
   getGenresByBookId,
   searchBooks,
   deleteBookById,
-  addBook
+  addBook,
+  updateBook
 }
