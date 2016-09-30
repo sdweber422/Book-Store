@@ -25,7 +25,8 @@ mixin booklist(adminFlag)
               img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
           td
             a(href=`/${book.id}`)= book.title
-          td= (book.description || 'Description not available.')
+          -if (!book.description) {book.description = 'Description not available.'}
+          td= book.description.slice(0, 200).concat('...')
           td
             ul
               for author in book.authors
@@ -42,19 +43,25 @@ doctype html
 html
   head
     title Book Store
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
+    link(rel="stylesheet" type="text/css" href="/stylesheets/style.css")
   body
-    ul
-      li
-        a(href="/") Home
-      li
-        a(href="/admin") Admin
-      li
-        form(method="get" action=adminFlag ? "/admin" : "/search")
-          label Search For Books:
-          input(type="text" placeholder="Search Books..." name="options")
-          button(type="submit" value="Search") Search
-    block content
+    .navbar.navbar-default
+      ul.navStyle
+        li
+          a(href="/") Home
+        li
+          a(href="/admin") Admin
+        li
+          form(method="get" action=adminFlag ? "/admin" : "/search")
+            label Search For Books:
+            input(type="text" placeholder="Search Books..." name="options")
+            button(type="submit" value="Search") Search
+    .container
+      block content
 
     script(src="https://code.jquery.com/jquery-3.1.1.js", integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=", crossorigin="anonymous")
     script(src="/javascripts/main.js")

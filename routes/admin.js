@@ -9,7 +9,13 @@ router.get('/', (request, response) => {
     response.render( 'admin', { books: [], page, options, adminFlag: true })
   } else {
     database.searchBooks( options, page )
-      .then( books => { response.render("admin", {books, page, options, adminFlag: true }) })
+      .then( books => { response.render("admin", {
+        books: books.length === 11 ? books.slice(0,-1) : books,
+        page,
+        options,
+        adminFlag: true,
+        lastPageFlag: books[10] ? false : true
+      }) })
       .catch( error => { response.send({ message: error.message }) })
     }
 })

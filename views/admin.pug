@@ -2,5 +2,13 @@ extends index
 block content
   h1 admin
   a(href="/admin/add") Add
-
+  +previousNext
   +booklist(true)
+  +previousNext
+
+
+mixin previousNext
+  if page > 1
+    a(href='/admin?options='+options +'&page='+(page-1)) Previous
+  if !lastPageFlag && books.length >= 10
+    a(href='/admin?options='+options +'&page='+(page+1)) Next

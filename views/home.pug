@@ -1,10 +1,13 @@
 extends index
 block content
   h1 Welcome to the Library
+  +previousNext
   +booklist
-  br
+  +previousNext
+
+
+mixin previousNext
   if page > 1
     a(href='/?page='+(page-1)) Previous
-  br
   if !lastPageFlag
     a(href='/?page='+(page+1)) Next
