@@ -17,9 +17,9 @@ mixin booklist(adminFlag)
             td
               ul
                 li
-                  a(href=`/admin/edit/${book.id}`) Edit
+                  a.btn.btn-warning(href=`/admin/edit/${book.id}`) Edit
                 li
-                  a(href=`/admin/delete/${book.id}`) Delete
+                  a.btn.btn-danger(href=`/admin/delete/${book.id}`) Delete
           td
             a(href=`/${book.id}`)
               img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))

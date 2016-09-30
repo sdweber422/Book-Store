@@ -1,7 +1,11 @@
 extends index
 block content
-  h1 admin
-  a(href="/admin/add") Add
+  h1 Admin
+  a.btn.btn-success.btn-lg.col-md-4(href="/admin/add") Add
+  form.navbar-form.col-md-8(method="get" action="/admin")
+    input.form-control(type="text" placeholder="Search Books..." name="options")
+    button.btn.glyphicon.glyphicon-search(type="submit" value="Search")
+  .clearfix
   +previousNext
   +booklist(true)
   +previousNext

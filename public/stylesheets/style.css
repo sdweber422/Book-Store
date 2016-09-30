@@ -14,3 +14,11 @@
   list-style: none;
   margin-bottom: 10px;
 }
+
+.btn-lg {
+  margin-right: 50px;
+}
+
+.btn-info {
+  margin: 30px 0;
+}
