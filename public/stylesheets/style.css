@@ -5,3 +5,49 @@
 .navStyle li {
   display: inline-block;
 }
+
+.row {
+  margin-top: 3%
+}
+
+.row input {
+  margin-right: 1%
+}
+
+.row label {
+  margin-right: 1%
+}
+
+.row .genre a {
+  margin-right: 1%;
+}
+
+.container #add {
+  text-align: center
+}
+
+.container {
+  text-align: center
+}
+
+#edit {
+  text-align: left
+}
+
+.titleImage img {
+  width: 300px;
+  border-radius: 5px;
+  margin-top: 5%;
+}
+
+.authorGenreDescription #genres {
+  margin-top: 15%;
+}
+
+.authorGenreDescription #description {
+  margin-top: 15%;
+}
+
+.row #editDescription {
+  display: block;
+}
