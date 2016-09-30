@@ -123,6 +123,9 @@ const addAuthors = (bookId, authors) => {
   const associateBookAuthorSql =
         'INSERT INTO book_authors (author_id, book_id) VALUES ($1, $2)'
   const promises = []
+  if (!Array.isArray(authors)) {
+    authors = [authors]
+  }
   for (author of authors) {
     if( author.length !== 0){
       promises.push( db.any(addAuthorSql, [author]) )
@@ -143,6 +146,9 @@ const addGenres = (bookId, genres) => {
   const associateBookGenreSql =
         'INSERT INTO book_genres (genre_id, book_id) VALUES ($1, $2)'
   const promises = []
+  if (!Array.isArray(genres)) {
+    genres = [genres]
+  }
   for (genre of genres) {
     if( genre.length !== 0){
       promises.push( db.any(addGenreSql, [genre]) )

@@ -2,8 +2,25 @@
   margin-bottom: 0px;
 }
 
-.navStyle li {
-  display: inline-block;
+.table th {
+  text-align: center;
+}
+
+.table img {
+  height: 194px;
+}
+
+.table li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.btn-lg {
+  margin-right: 50px;
+}
+
+.btn-info {
+  margin: 30px 0;
 }
 
 .row {
