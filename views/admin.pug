@@ -8,7 +8,12 @@ block content
 
 
 mixin previousNext
-  if page > 1
-    a(href='/admin?options='+options +'&page='+(page-1)) Previous
-  if !lastPageFlag && books.length >= 10
-    a(href='/admin?options='+options +'&page='+(page+1)) Next
+  .clearfix
+    if page > 1
+      a.pull-left.btn.btn-info(href='/admin?options='+options +'&page='+(page-1))
+        .glyphicon.glyphicon-chevron-left
+        |Previous
+    if !lastPageFlag && books.length >= 10
+      a.pull-right.btn.btn-info(href='/admin?options='+options +'&page='+(page+1)) Next
+        .glyphicon.glyphicon-chevron-right
+  .clearfix

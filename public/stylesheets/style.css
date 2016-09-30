@@ -2,6 +2,15 @@
   margin-bottom: 0px;
 }
 
-.navStyle li {
-  display: inline-block;
+.table th {
+  text-align: center;
+}
+
+.table img {
+  height: 194px;
+}
+
+.table li {
+  list-style: none;
+  margin-bottom: 10px;
 }

@@ -6,8 +6,12 @@ block content
 
 
 mixin previousNext
-  .previousNext
+  .clearfix
     if page > 1
-      a(href='/search?options='+options +'&page='+(page-1)) Previous
+      a.pull-left.btn.btn-info(href='/search?options='+options +'&page='+(page-1))
+        .glyphicon.glyphicon-chevron-left
+        |Previous
     if !lastPageFlag
-      a(href='/search?options='+options +'&page='+(page+1)) Next
+      a.pull-right.btn.btn-info(href='/search?options='+options +'&page='+(page+1)) Next
+        .glyphicon.glyphicon-chevron-right
+  .clearfix

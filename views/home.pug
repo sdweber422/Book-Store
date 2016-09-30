@@ -1,13 +1,17 @@
 extends index
 block content
-  h1 Welcome to the Library
   +previousNext
   +booklist
   +previousNext
 
 
 mixin previousNext
-  if page > 1
-    a(href='/?page='+(page-1)) Previous
-  if !lastPageFlag
-    a(href='/?page='+(page+1)) Next
+  .clearfix
+    if page > 1
+      a.pull-left.btn.btn-info(href='/?page='+(page-1))
+        .glyphicon.glyphicon-chevron-left
+        |Previous
+    if !lastPageFlag
+      a.pull-right.btn.btn-info(href='/?page='+(page+1)) Next
+        .glyphicon.glyphicon-chevron-right
+  .clearfix

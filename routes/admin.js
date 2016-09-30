@@ -21,7 +21,7 @@ router.get('/', (request, response) => {
 })
 
 router.get('/add', (request, response) => {
-  response.render('add')
+  response.render('add', {adminFlag: true})
 })
 
 router.get('/edit', (request, response) => {
@@ -43,7 +43,8 @@ router.get('/edit/:id', (request, response) => {
     response.render('edit', {
       book,
       authors,
-      genres
+      genres,
+      adminFlag: true
     })
   })
 })
@@ -68,7 +69,7 @@ router.get('/delete/:id', (request, response) => {
   .then( book => {
     database.deleteBookById(bookId)
     .then( () => {
-      response.render('delete', {book})
+      response.render('delete', {book, adminFlag: true})
     })
   })
 })
