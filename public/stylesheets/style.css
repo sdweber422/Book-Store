@@ -1,9 +1,9 @@
-.previousNext {
-  margin-bottom: 0px;
-}
-
 .table th {
   text-align: center;
+}
+
+.table td {
+  text-align: left;
 }
 
 .table img {
@@ -67,4 +67,12 @@
 
 .row #editDescription {
   display: block;
+}
+
+.glyphicon-remove {
+  margin: 4px 9px;
+}
+
+.glyphicon-plus {
+  margin-top: 5px;
 }

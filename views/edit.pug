@@ -6,34 +6,40 @@ block content
 
       form(method="post" action=`/admin/edit/${book.id}`)
 
-        .row
-          label Title:
-          input(type="text" value=`${book.title}` name="title" size="40")
+        .col-md-6
+          .row
+            label Title:
+            input(type="text" value=`${book.title}` name="title" size="40")
 
-        .row.author
-          label Authors:
-          for author in authors
-            .edit-author(data-author-id=author.id)
-              span= author.name
-              a.delete-author(href="#", data-author-id=author.id, data-book-id=book.id).span.glyphicon.glyphicon-remove.btn.btn-sm
-          button.addAuthorButton.span.glyphicon.glyphicon-plus
+          .row
+            .titleImage
+              img(src=book.image_url)
 
-        .row.genre
-          label Genres:
-          for genre in genres
-            .edit-genre(data-genre-id=genre.id)
-              span= genre.name
-              a.delete-genre(href="#", data-genre-id=genre.id, data-book-id=book.id).span.glyphicon.glyphicon-remove
-          button.addGenreButton.span.glyphicon.glyphicon-plus
+          .row
+            label Image URL:
+            input(type="text" value=`${book.image_url}` name="image_url" size="50")
 
-        .row
-          label Image URL:
-          input(type="text" value=`${book.image_url}` name="image_url" size="50")
+        .col-md-6
+          .row.author
+            label Authors:
+            for author in authors
+              .edit-author(data-author-id=author.id)
+                span= author.name
+                a.delete-author(href="#", data-author-id=author.id, data-book-id=book.id).span.glyphicon.glyphicon-remove.btn.btn-xs.btn-danger
+            button.addAuthorButton.span.glyphicon.glyphicon-plus.btn.btn-xs
+
+          .row.genre
+            label Genres:
+            for genre in genres
+              .edit-genre(data-genre-id=genre.id)
+                span= genre.name
+                a.delete-genre(href="#", data-genre-id=genre.id, data-book-id=book.id).span.glyphicon.glyphicon-remove.btn.btn-xs.btn-danger
+            button.addGenreButton.span.glyphicon.glyphicon-plus.btn.btn-xs
 
 
-        .row
-          label#editDescription Description:
-          textarea(type="text" placeholder="book description" name="description" rows="4" cols="50")
+          .row
+            label#editDescription Description:
+            textarea(type="text" placeholder="book description" name="description" rows="4" cols="50")
 
-        .row
-          button(type="submit") Update
+          .row
+            button.btn.btn-primary.btn-lg(type="submit") Update
