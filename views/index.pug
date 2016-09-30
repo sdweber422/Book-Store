@@ -25,7 +25,8 @@ mixin booklist(adminFlag)
               img(src=(book.image_url || 'http://williamwoods.ecampus.com/Content/img/book_stack.png'))
           td
             a(href=`/${book.id}`)= book.title
-          td= (book.description.slice(0, 200).concat('...') || 'Description not available.')
+          -if (!book.description) {book.description = 'Description not available.'}
+          td= book.description.slice(0, 200).concat('...')
           td
             ul
               for author in book.authors
